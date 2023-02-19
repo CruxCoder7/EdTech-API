@@ -5,7 +5,6 @@ const Role = db.role;
 const checkUserScope = (scopeVal) => {
   return async (req, res, next) => {
     const authHeader = req.headers.authorization;
-    console.log(scopeVal);
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res.send("no token");
     }
