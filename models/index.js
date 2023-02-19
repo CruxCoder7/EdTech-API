@@ -21,14 +21,4 @@ db.user.hasMany(db.student, {
   foreignKey: "userId",
 });
 
-db.SCOPES = [
-  "user-get",
-  "role-get",
-  "student-create",
-  "student-get",
-  "school-create",
-  "school-get",
-  "school-students",
-];
-
 module.exports = db;

@@ -1,18 +1,7 @@
 const db = require("../models");
 const Role = db.role;
-const SCOPES = db.SCOPES;
-
-const isValidScope = (scopes) => {
-  for (let i = 0; i < scopes.length; i++) {
-    if (!SCOPES.includes(scopes[i])) return false;
-  }
-  return true;
-};
 
 exports.create = (req, res) => {
-  if (!isValidScope(req.body.scopes)) {
-    return res.json({ status: false, errors: [{ message: "invalid scope" }] });
-  }
   const role = {
     name: req.body.name,
     scopes: req.body.scopes,
