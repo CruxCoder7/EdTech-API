@@ -88,9 +88,23 @@ exports.signIn = (req, res) => {
 
 exports.findAll = async (req, res) => {
   if (req.access) {
-    const resp = await User.findAll({});
-    res.status(200).json({ status: true, content: { data: resp } });
+    try {
+      const resp = await User.findAll({});
+      return res.status(200).json({ status: true, content: { data: resp } });
+    } catch (error) {
+      return res.json({ message: err.message });
+    }
   }
 };
 
-exports.findOne = (req, res) => {};
+exports.findOne = async (req, res) => {
+  if (req.access) {
+    const id = req.params.id;
+    try {
+      const resp = await User.findByPk(id);
+      return res.json({ resp });
+    } catch (err) {
+      return res.json({ message: err.message });
+    }
+  }
+};
