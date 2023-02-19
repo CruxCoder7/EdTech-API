@@ -1,36 +1,45 @@
 const db = require("../models");
 const User = db.user;
+const Role = db.role;
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-exports.signUp = async (req, res) => {
+exports.signUp = (req, res) => {
   User.findOne({
     where: {
       email: req.body.email,
     },
-  }).then(async (data) => {
+  }).then((data) => {
     if (data) {
       res.status(500).json({
         status: false,
         errors: [{ message: "Email address already exists." }],
       });
     } else {
-      const user = {
-        name: req.body.name,
-        email: req.body.email,
-        password: await bcrypt.hash(req.body.password, 10),
-        roleId: req.body.roleId,
-      };
-      User.create(user)
-        .then((data) => {
-          res.json({ status: true, content: { data } });
-        })
-        .catch((err) => {
-          res.status(500).json({
-            status: false,
-            errors: [{ message: "Something went wrong." }],
-          });
-        });
+      Role.findOne({ _id: req.body.roleId }).then(async (data) => {
+        if (data) {
+          const user = {
+            name: req.body.name,
+            email: req.body.email,
+            password: await bcrypt.hash(req.body.password, 10),
+            roleId: req.body.roleId,
+          };
+          User.create(user)
+            .then((data) => {
+              res.json({ status: true, content: { data } });
+            })
+            .catch((err) => {
+              res.status(500).json({
+                status: false,
+                errors: [{ message: "Something went wrong." }],
+              });
+            });
+        } else {
+          res
+            .status(404)
+            .json({ status: false, errors: [{ message: "roleId is wrong" }] });
+        }
+      });
     }
   });
 };
