@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 exports.signUp = async (req, res) => {
+  // check if email already exists
   try {
     const resp = await User.findOne({
       where: {
@@ -23,7 +24,7 @@ exports.signUp = async (req, res) => {
       errors: [{ message: "Something went wrong." }],
     });
   }
-
+  // check if the roleId exists
   try {
     const resp = await Role.findOne({ where: { _id: req.body.roleId } });
     if (resp) {
@@ -42,20 +43,16 @@ exports.signUp = async (req, res) => {
           errors: [{ message: "Something went wrong." }],
         });
       }
-    } else {
-      return res
-        .status(404)
-        .json({ status: false, errors: [{ message: "roleId is wrong" }] });
     }
   } catch (error) {
-    return res.status(500).json({
-      status: false,
-      errors: [{ message: "Something went wrong." }],
-    });
+    return res
+      .status(404)
+      .json({ status: false, errors: [{ message: "roleId is wrong" }] });
   }
 };
 
 exports.signIn = async (req, res) => {
+  //check if email exists
   try {
     const resp = await User.findOne({
       where: {
@@ -68,6 +65,7 @@ exports.signIn = async (req, res) => {
         errors: [{ message: "User not found." }],
       });
     }
+    // check if password matches
     let passwordIsValid = await bcrypt.compare(
       req.body.password,
       resp.password
@@ -79,7 +77,7 @@ exports.signIn = async (req, res) => {
         errors: [{ message: "User not found." }],
       });
     }
-
+    // create JWT for the user
     try {
       let token = jwt.sign(
         { _id: resp._id, roleId: resp.roleId },
@@ -104,6 +102,7 @@ exports.signIn = async (req, res) => {
 };
 
 exports.findAll = async (req, res) => {
+  // returns all users
   if (req.access) {
     try {
       const resp = await User.findAll({});
@@ -115,6 +114,7 @@ exports.findAll = async (req, res) => {
 };
 
 exports.findOne = async (req, res) => {
+  // returns one user
   if (req.access) {
     const id = req.params.id;
     try {

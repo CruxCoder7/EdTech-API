@@ -9,6 +9,7 @@ db.role = require("./role.model.js")(sequelize, DataTypes);
 db.student = require("./student.model.js")(sequelize, DataTypes);
 db.school = require("./school.model.js")(sequelize, DataTypes);
 
+// Relationships between tables
 db.user.belongsTo(db.role, {
   foreignKey: "roleId",
 });

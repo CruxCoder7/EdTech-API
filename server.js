@@ -15,9 +15,10 @@ const db = require("./models");
 db.sequelize.sync().then(() => console.log("db in sync"));
 
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to EdTech" });
+  res.json({ message: "EdTech Management" });
 });
 
+// API routes
 app.use("/user", userRoutes);
 app.use("/role", roleRoutes);
 app.use("/student", studentRoutes);
