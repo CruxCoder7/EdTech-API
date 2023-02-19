@@ -9,22 +9,29 @@ const checkUserScope = (scopeVal) => {
       return res.send("no token");
     }
     const token = authHeader.split(" ")[1];
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    const { roleId } = decoded;
-    const resp = await Role.findOne({
-      where: {
-        _id: roleId,
-      },
-    });
-    const scopes = resp.scopes;
-    if (scopes.includes(scopeVal)) {
-      req.access = true;
-      return next();
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+      const { roleId } = decoded;
+      const resp = await Role.findOne({
+        where: {
+          _id: roleId,
+        },
+      });
+      const scopes = resp.scopes;
+      if (scopes.includes(scopeVal)) {
+        req.access = true;
+        return next();
+      }
+      return res.json({
+        status: false,
+        errors: [{ message: "You don't have access" }],
+      });
+    } catch (error) {
+      return res.json({
+        status: false,
+        errors: [{ message: "fake token" }],
+      });
     }
-    return res.json({
-      status: false,
-      errors: [{ message: "You don't have access" }],
-    });
   };
 };
 
