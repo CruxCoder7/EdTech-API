@@ -11,5 +11,5 @@ db.user.belongsTo(db.role, {
   foreignKey: "roleId",
 });
 
-db.ROLES = ["Admin", "Student", "Principal"];
+db.ROLES = ["Admin", "Principal"];
 module.exports = db;

@@ -69,9 +69,13 @@ exports.signIn = (req, res) => {
         });
       }
 
-      var token = jwt.sign({ _id: data._id }, "SECRET_KEY", {
-        expiresIn: 86400,
-      });
+      var token = jwt.sign(
+        { _id: data._id, roleId: data.roleId },
+        process.env.JWT_SECRET_KEY,
+        {
+          expiresIn: 86400,
+        }
+      );
       res.status(200).json({ status: true, content: { data, token } });
     })
     .catch((err) => {
@@ -82,5 +86,11 @@ exports.signIn = (req, res) => {
     });
 };
 
-exports.findAll = (req, res) => {};
+exports.findAll = async (req, res) => {
+  if (req.access) {
+    const resp = await User.findAll({});
+    res.status(200).json({ status: true, content: { data: resp } });
+  }
+};
+
 exports.findOne = (req, res) => {};
