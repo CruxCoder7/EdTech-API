@@ -11,5 +11,14 @@ db.user.belongsTo(db.role, {
   foreignKey: "roleId",
 });
 
-db.ROLES = ["Admin", "Principal"];
+db.SCOPES = [
+  "user-get",
+  "role-get",
+  "student-create",
+  "student-get",
+  "school-create",
+  "school-get",
+  "school-students",
+];
+
 module.exports = db;

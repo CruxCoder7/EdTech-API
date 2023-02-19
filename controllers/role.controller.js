@@ -1,58 +1,39 @@
 const db = require("../models");
 const Role = db.role;
-const ROLES = db.ROLES;
+const SCOPES = db.SCOPES;
 
-const checkRoles = (roles) => {
-  for (let i = 0; i < ROLES.length; i++) {
-    if (!ROLES.includes(roles)) {
-      return 0;
-    }
+const isValidScope = (scopes) => {
+  for (let i = 0; i < scopes.length; i++) {
+    if (!SCOPES.includes(scopes[i])) return false;
   }
-  return 1;
+  return true;
 };
 
 exports.create = (req, res) => {
-  if (checkRoles(req.body.name) === 0) {
-    return res.status(500).json({
-      status: false,
-      errors: [{ message: "Role not available" }],
-    });
+  if (!isValidScope(req.body.scopes)) {
+    return res.json({ status: false, errors: [{ message: "invalid scope" }] });
   }
+  const role = {
+    name: req.body.name,
+    scopes: req.body.scopes,
+  };
 
-  Role.findOne({
-    where: {
-      name: req.body.name,
-    },
-  }).then((data) => {
-    if (data) {
-      res.status(404).json({
+  Role.create(role)
+    .then((data) => {
+      res.status(200).json({ status: true, content: { data } });
+    })
+    .catch((err) => {
+      res.status(500).json({
         status: false,
-        errors: [{ message: "Role already exists." }],
+        errors: [{ message: "Something went wrong." }],
       });
-    } else {
-      const role = {
-        name: req.body.name,
-        scopes: req.body.scopes,
-      };
-
-      Role.create(role)
-        .then((data) => {
-          res.status(200).json({ status: true, content: { data } });
-        })
-        .catch((err) => {
-          res.status(500).json({
-            status: false,
-            errors: [{ message: "Something went wrong." }],
-          });
-        });
-    }
-  });
+    });
 };
 
 exports.getAll = (req, res) => {
   Role.findAll({})
     .then((data) => {
-      res.status(200).json({ data });
+      res.status(200).json({ status: true, content: { data } });
     })
     .catch((err) => {
       res.status(500).json({ message: err.message });
