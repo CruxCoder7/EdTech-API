@@ -119,7 +119,7 @@ exports.findOne = async (req, res) => {
     const id = req.params.id;
     try {
       const resp = await User.findByPk(id);
-      return res.json({ resp });
+      return res.json({ status: true, content: { data: resp } });
     } catch (err) {
       return res.json({ message: err.message });
     }

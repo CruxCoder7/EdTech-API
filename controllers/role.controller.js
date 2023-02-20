@@ -18,10 +18,12 @@ exports.create = async (req, res) => {
 };
 
 exports.getAll = async (req, res) => {
-  try {
-    const resp = awaitRole.findAll({});
-    res.status(200).json({ status: true, content: { data: resp } });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  if (req.access) {
+    try {
+      const resp = await Role.findAll({});
+      res.status(200).json({ status: true, content: { data: resp } });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
   }
 };

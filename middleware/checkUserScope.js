@@ -12,6 +12,7 @@ const checkUserScope = (scopeVal) => {
     const token = authHeader.split(" ")[1];
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+      // receive the userId and roleId of the user
       const { _id, roleId } = decoded;
       const resp = await Role.findOne({
         where: {
@@ -20,6 +21,7 @@ const checkUserScope = (scopeVal) => {
       });
       const scopes = resp.scopes;
       if (scopes.includes(scopeVal)) {
+        // append the access to be true and id to be the userId
         req.access = true;
         req.id = _id;
         return next();
