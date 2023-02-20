@@ -1,3 +1,4 @@
+
 # EdTech-Management
 
 ### Database
@@ -30,9 +31,10 @@
 ### Middleware
 * CheckUserScope
 
-&emsp;&emsp;Checks if the signed in user has the required scope to access endpoints. 
+&emsp;&emsp;Checks if the signed in user has the required scope to access &emsp;&emsp;&emsp;endpoints. 
 
-* Validation
+* Validation 
+
 &emsp;&emsp; Validatorjs is used.
 
 ### APIs
