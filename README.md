@@ -30,7 +30,7 @@
 ### Middleware
 * CheckUserScope
 
-&emsp;&emsp;Checks if the signed in user has the required scope to access &emsp;&emsp;&emsp;endpoints. 
+&emsp;&emsp;Checks if the signed in user has the required scope to access endpoints. 
 
 * Validation
 &emsp;&emsp; Validatorjs is used.
