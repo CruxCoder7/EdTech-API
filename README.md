@@ -14,7 +14,8 @@
 &emsp;&emsp; Primary Key of User is another Foreign Key of Student.
 
 ### Crux
-* There is no restriction on the name of the Role during its creation, but the scopes associated with a Role, should only consist as the following:
+* There is no restriction on the name of the Role during its creation, but the scopes associated with a Role, should only consist as the following:  
+
 &emsp;&emsp; user-get  
 &emsp;&emsp; user-create  
 &emsp;&emsp; student-get  
