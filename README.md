@@ -3,7 +3,7 @@
 
 ### Database
 * I have used a remote postgresql database, provided by Railway.
-* Only 200 hours of usage available.
+* Only 500 hours of usage available.
 
 ### Relationships
 * User belongs to Role
