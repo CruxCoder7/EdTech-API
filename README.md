@@ -41,3 +41,6 @@
 * The school/student endpoint returns only the students of the particular school only.
 
 * The GET /student endpoint returns only the students of the user that is logged in.
+
+### Note
+* I used Postman throughout the development of this application.
