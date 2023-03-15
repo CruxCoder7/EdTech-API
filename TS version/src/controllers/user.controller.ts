@@ -2,7 +2,6 @@ import db from "../models";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
-import { Model, ModelStatic } from "sequelize";
 const User = db.user;
 const Role = db.role;
 
@@ -78,7 +77,7 @@ export async function signIn(req: Request, res: Response) {
           errors: [{ message: "User not found." }],
         });
       }
-      // check if password matches
+      // check if passw ord matches
       let passwordIsValid = await bcrypt.compare(
         req.body.password,
         resp.password
@@ -110,6 +109,31 @@ export async function signIn(req: Request, res: Response) {
         status: false,
         errors: [{ message: "Something went wrong." }],
       });
+    }
+  }
+}
+
+export async function findAll(req: Request, res: Response) {
+  if (User) {
+    try {
+      const resp = await User.findAll({});
+      return res.status(200).json({ status: true, content: { data: resp } });
+    } catch (error) {
+      if (error instanceof Error)
+        return res.json({ message: error.message });
+    }
+  }
+}
+
+export async function findOne(req: Request, res: Response) {
+  if (User) {
+    const id = req.params.id;
+    try {
+      const resp = await User.findByPk(id);
+      return res.json({ status: true, content: { data: resp } });
+    } catch (err) {
+      if (err instanceof Error)
+        return res.json({ message: err.message });
     }
   }
 }

@@ -6,6 +6,8 @@ interface ModelProps {
   scopes: string[];
 }
 
+
+
 export default function (sequelize: Sequelize) {
   const Role: ModelStatic<Model<ModelProps>> = sequelize.define<Model<ModelProps>>("role", {
     _id: {

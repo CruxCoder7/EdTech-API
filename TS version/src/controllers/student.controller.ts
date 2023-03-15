@@ -34,6 +34,19 @@ type StudentProps = {
   schoolId: string;
 };
 
+export async function getAll(req: Request, res: Response) {
+  if (Student) {
+    try {
+      const resp = await Student.findAll({ where: { userId: res.locals.id } });
+      return res.json({ status: true, content: { data: resp } });
+    } catch (error) {
+      if (error instanceof Error)
+        return res.json({ status: false, errors: [{ message: error.message }] });
+    }
+  }
+}
+
+
 export async function create(req: Request, res: Response) {
   const student: StudentProps = {
     name: req.body.name,
@@ -64,3 +77,4 @@ export async function create(req: Request, res: Response) {
     }
   }
 }
+

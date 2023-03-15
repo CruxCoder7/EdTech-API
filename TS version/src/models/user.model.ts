@@ -7,6 +7,7 @@ interface ModelProps {
   password: string,
 }
 
+
 export default function (sequelize: Sequelize) {
   const User: ModelStatic<Model<ModelProps>> = sequelize.define<Model<ModelProps>>("user", {
     _id: {

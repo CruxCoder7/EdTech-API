@@ -1,87 +1,62 @@
 import { Request, Response } from "express";
 import db from "../models";
 const Student = db.student;
-const User = db.user;
 const School = db.school;
 
-const isValidUserId = async (user_id: string) => {
-  if (User) {
-    const res = await User.findOne({
-      where: {
-        _id: user_id,
-      },
-    });
-    if (res) return 1;
-    return 0;
-  }
-};
 
-const isValidSchoolId = async (school_id: string) => {
-  if (School) {
-    const res = await School.findOne({
-      where: {
-        _id: school_id,
-      },
-    });
-    if (res) return 1;
-    return 0;
-  }
-};
-
-type studentType = {
-  name: string;
-  userId: string;
-  schoolId: string;
-};
+type schoolProps = {
+  name: string,
+  city: string,
+  state: string,
+  country: string
+}
 
 export async function create(req: Request, res: Response) {
-  const student: studentType = {
-    name: req.body.name,
-    userId: req.body.userId,
-    schoolId: req.body.schoolId,
-  };
-  // check if roleId and schoolId exist
-  if (
-    (isValidUserId(req.body.userId) as unknown as number) == 0 ||
-    (isValidSchoolId(req.body.schoolId) as unknown as number) == 0
-  ) {
-    return res.json({
-      status: false,
-      errors: [{ message: "invalid userid or schoolid" }],
-    });
-  }
-  if (Student) {
+  if (School) {
+
+    const school: schoolProps = {
+      name: req.body.name,
+      city: req.body.city,
+      state: req.body.state,
+      country: req.body.country,
+    };
     try {
-      const resp = await Student.create(student);
-      res.json({ status: true, content: { data: resp } });
+      const resp = await School.create(school);
+      return res.json({ status: true, content: { data: resp } });
     } catch (error) {
-      if (error instanceof Error) {
-        return res.json({
-          status: false,
-          errors: [{ message: error.message }],
-        });
-      }
+      if (error instanceof Error)
+        return res.json({ status: false, errors: [{ message: error.message }] });
     }
   }
 }
-namespace Express {
-  export interface Request {
-    id?: string;
+
+export async function getAll(req: Request, res: Response) {
+  if (School) {
+    try {
+      const resp = await School.findAll({});
+      return res.json({ status: true, content: { data: resp } });
+    } catch (error) {
+      if (error instanceof Error)
+        return res.json({ status: false, errors: [{ message: error.message }] });
+    }
   }
 }
 
-export async function getAll(req: Express.Request, res: Response) {
-  if (Student) {
+export async function getStudents(req: Request, res: Response) {
+  if (School && Student) {
     try {
-      const resp = await Student.findAll({ where: { userId: req.id } });
+      const resp = await School.findAll({
+        include: [
+          {
+            model: Student,
+            as: "students",
+          },
+        ],
+      });
       return res.json({ status: true, content: { data: resp } });
     } catch (error) {
-      if (error instanceof Error) {
-        return res.json({
-          status: false,
-          errors: [{ message: error.message }],
-        });
-      }
+      if (error instanceof Error)
+        return res.json({ status: false, errors: [{ message: error.message }] });
     }
   }
 }

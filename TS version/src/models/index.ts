@@ -1,4 +1,4 @@
-import { Sequelize, DataTypes, ModelStatic, Model } from "sequelize";
+import { Sequelize, ModelStatic, Model } from "sequelize";
 
 const sequelize = new Sequelize(process.env.POSTGRES_URI!);
 
@@ -12,13 +12,14 @@ interface DbProps {
 }
 
 const db: DbProps = {};
-db.Sequelize = new Sequelize();
+//@ts-ignore
+db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.user = require("./user.model.js")(sequelize);
-db.role = require("./role.model.js")(sequelize);
-db.student = require("./student.model.js")(sequelize);
-db.school = require("./school.model.js")(sequelize);
+db.user = require("./user.model").default(sequelize);
+db.role = require("./role.model.ts").default(sequelize);
+db.student = require("./student.model.ts").default(sequelize);
+db.school = require("./school.model.ts").default(sequelize);
 
 // Relationships between tables
 if (db.user && db.role)
