@@ -13,7 +13,7 @@ interface DbProps {
 
 const db: DbProps = {};
 
-db.Sequelize = Sequelize;
+db.Sequelize = sequelize;
 db.sequelize = sequelize;
 
 db.user = require("./user.model").default(sequelize);
