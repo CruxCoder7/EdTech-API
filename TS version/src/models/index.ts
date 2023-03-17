@@ -12,7 +12,7 @@ interface DbProps {
 }
 
 const db: DbProps = {};
-//@ts-ignore
+
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
