@@ -5,6 +5,7 @@ import User from "../../schema/v1/user";
 import Role from "../../schema/v1/role";
 import School from "../../schema/v1/school";
 import Student from "../../schema/v1/student";
+import Logger from "../../universe/v1/logger";
 
 class Database {
     static db: IDb = {};
@@ -23,7 +24,7 @@ class Database {
                 console.log("db in sync.");
             });
         } catch (error) {
-            console.log(error);
+            Logger.instance.error(error);
         }
     }
 }
