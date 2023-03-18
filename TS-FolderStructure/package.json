@@ -23,7 +23,8 @@
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.28.0",
     "ts-node": "^10.9.1",
-    "validatorjs": "^3.22.1"
+    "validatorjs": "^3.22.1",
+    "winston": "^3.8.2"
   },
   "keywords": [],
   "author": "",
