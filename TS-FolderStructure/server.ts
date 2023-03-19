@@ -1,20 +1,22 @@
-import express from 'express'
-import Database from './loaders/v1/database';
-import Env from './loaders/v1/env';
-import Logger from './universe/v1/libraries/logger';
-import FrameworkLoader from './loaders/v1/framework';
+import express from "express";
+import UserRouter from "./api/v1/user";
+import Database from "./loaders/v1/database";
+import Env from "./loaders/v1/env";
+import FrameworkLoader from "./loaders/v1/framework";
+import Logger from "./universe/v1/libraries/logger";
 
 const server = async (): Promise<express.Application> => {
-    const app = express();
-    // Loaders
-    Env.Loader()
-    Logger.Loader()
-    await Database.Loader()
+  const app = express();
+  //Loaders
+  Env.Loader();
+  Logger.Loader();
+  await Database.Loader();
+  FrameworkLoader(app);
 
-    FrameworkLoader(app)
-    //Routes
+  //Routes
+  app.use("/user", UserRouter);
 
-    return app;
-}
+  return app;
+};
 
 export default server;

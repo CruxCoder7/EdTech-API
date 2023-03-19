@@ -1,32 +1,40 @@
-import Env from "./env";
-import { Sequelize } from "sequelize";
-import { IDb } from "../../interfaces/v1/IDb";
-import User from "../../schema/v1/user";
-import Role from "../../schema/v1/role";
-import School from "../../schema/v1/school";
-import Student from "../../schema/v1/student";
+import { ModelStatic } from "sequelize";
+import RoleModel from "../../models/v1/role";
+import UserModel from "../../models/v1/user";
+import { collections } from "../../schema/v1/meta";
 import Logger from "../../universe/v1/libraries/logger";
+import database from "../../universe/v1/models/database";
+import Env from "./env";
 
 class Database {
-    static db: IDb = {};
+  static models: Record<typeof collections[number], ModelStatic<any>>;
+  static ListOfModels = [UserModel, RoleModel];
 
-    static async Loader() {
-        const uri = Env.variable.POSTGRES_URI;
-        try {
-            this.db.sequelize = new Sequelize(uri);
+  static async Loader(): Promise<void> {
+    try {
+      await database.authenticate();
+      Logger.instance.info(`Connected to ${Env.variable.POSTGRES_URI}.`);
 
-            this.db.user = User(this.db.sequelize);
-            this.db.role = Role(this.db.sequelize);
-            this.db.school = School(this.db.sequelize);
-            this.db.student = Student(this.db.sequelize);
+      const models: Record<string, ModelStatic<any>> = {};
+      for (const model of Database.ListOfModels) {
+        models[model.name] = model;
+        models[model.tableName] = model;
+      }
+      Database.models = models;
 
-            this.db.sequelize?.sync({ force: true }).then(() => {
-                console.log("db in sync.");
-            });
-        } catch (error) {
-            Logger.instance.error(error);
-        }
+      await database.sync({ force: true });
+    } catch (ex) {
+      Logger.instance.error(ex);
     }
+  }
+
+  static async Close(): Promise<void> {
+    try {
+      await database.close();
+    } catch (ex) {
+      Logger.instance.error(ex);
+    }
+  }
 }
 
 export default Database;

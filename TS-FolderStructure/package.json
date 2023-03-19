@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "SET NODE_ENV=development & env-cmd -f config/.env.development ts-node index.ts"
+    "dev": "SET NODE_ENV=development & env-cmd -f config/.env.development nodemon index.ts"
   },
   "dependencies": {
     "@types/bcrypt": "^5.0.0",
