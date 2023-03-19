@@ -1,4 +1,7 @@
 import express from "express";
+import RoleRouter from "./api/v1/role";
+import SchoolRouter from "./api/v1/school";
+import StudentRouter from "./api/v1/student";
 import UserRouter from "./api/v1/user";
 import Database from "./loaders/v1/database";
 import Env from "./loaders/v1/env";
@@ -15,6 +18,9 @@ const server = async (): Promise<express.Application> => {
 
   //Routes
   app.use("/user", UserRouter);
+  app.use("/role", RoleRouter);
+  app.use("/student", StudentRouter);
+  app.use("/school", SchoolRouter);
 
   return app;
 };

@@ -1,5 +1,7 @@
 import { ModelStatic } from "sequelize";
 import RoleModel from "../../models/v1/role";
+import SchoolModel from "../../models/v1/school";
+import StudentModel from "../../models/v1/student";
 import UserModel from "../../models/v1/user";
 import { collections } from "../../schema/v1/meta";
 import Logger from "../../universe/v1/libraries/logger";
@@ -8,7 +10,7 @@ import Env from "./env";
 
 class Database {
   static models: Record<typeof collections[number], ModelStatic<any>>;
-  static ListOfModels = [UserModel, RoleModel];
+  static ListOfModels = [UserModel, RoleModel, SchoolModel, StudentModel];
 
   static async Loader(): Promise<void> {
     try {

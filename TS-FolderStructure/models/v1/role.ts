@@ -2,8 +2,9 @@ import { models } from "../../schema/v1/meta";
 import { DataTypes } from "sequelize";
 import database from "../../universe/v1/models/database";
 import { RoleColumn } from "../../schema/v1/role";
+import UserModel from "./user";
 
-const RoleModel = database.define(models.user, {
+const RoleModel = database.define(models.role, {
   [RoleColumn._id]: {
     type: DataTypes.UUID,
     primaryKey: true,
@@ -11,6 +12,10 @@ const RoleModel = database.define(models.user, {
   },
   [RoleColumn.name]: DataTypes.STRING,
   [RoleColumn.scopes]: DataTypes.ARRAY(DataTypes.STRING),
+});
+
+UserModel.belongsTo(RoleModel, {
+  foreignKey: "roleId",
 });
 
 export default RoleModel;

@@ -3,7 +3,7 @@ import { DataTypes } from "sequelize";
 import database from "../../universe/v1/models/database";
 import { UserColumn } from "../../schema/v1/user";
 
-const UserModel = database.define("user", {
+const UserModel = database.define(models.user, {
   [UserColumn._id]: {
     type: DataTypes.UUID,
     primaryKey: true,
