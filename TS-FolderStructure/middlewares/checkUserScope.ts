@@ -1,16 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import Database from "../loaders/v1/database";
 import jwt from "jsonwebtoken";
-
-type decodedProps = {
-  _id: string;
-  roleId: string;
-};
-
-type respProps = {
-  id: string;
-  scopes: string[];
-};
+import { decoded, Dbresp } from "../interfaces/checkUserScope";
 
 export function checkUserScope(scopeVal: string) {
   // checks if the signed in user has the required scope to access endpoints
@@ -26,14 +17,14 @@ export function checkUserScope(scopeVal: string) {
         process.env.JWT_SECRET_KEY!
       );
       // receive the userId and roleId of the user
-      const { _id, roleId } = decoded as decodedProps;
+      const { _id, roleId } = decoded as decoded;
       console.log(roleId, _id);
 
       const resp = (await Database.models.role.findOne({
         where: {
           _id: roleId,
         },
-      })) as respProps | null;
+      })) as Dbresp | null;
 
       const scopes = resp?.scopes;
       if (scopes?.includes(scopeVal)) {
